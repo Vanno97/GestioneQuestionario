@@ -1,0 +1,49 @@
+body {
+  background-color: #505050;
+}
+
+.loginForm {
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.loginInput:-webkit-autofill,
+.loginInput:-webkit-autofill:hover,
+.loginInput:-webkit-autofill:focus,
+.loginInput:-webkit-autofill:active {
+  -webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
+  -webkit-transition-delay: 9999s;
+}
+
+.loginInput, .loginInput:focus, .loginInput:disabled, .form-select {
+  color: white;
+  background-color: #505050;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px white solid;
+}
+
+.card {
+  background-color: var(--bs-gray-900);
+}
+
+label {
+  color: white;
+}
+
+.progetto {
+  background-color: var(--bs-gray-500);
+  border-radius: 5px;
+}
+
+.dettagliProgetto {
+  background-color: var(--bs-gray-900);
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+

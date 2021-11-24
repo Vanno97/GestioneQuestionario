@@ -1,31 +1,66 @@
+CREATE TABLE `classe` (
+    `id_classe` INT AUTO_INCREMENT,
+    `nomeClasse` VARCHAR(50),
+    PRIMARY KEY(`id_classe`)
+);
+
 CREATE TABLE `utenti` (
-    `utenti_id` INT AUTO_INCREMENT,
+    `id_utenti` INT AUTO_INCREMENT,
     `username` VARCHAR(50),
     `password` VARCHAR(50),
-    PRIMARY KEY(`utenti_id`)
-);
-
-CREATE TABLE `questionario` (
-    `questionario_id` INT UNIQUE,
-    `nome_questionario` VARCHAR(50),
-    `classe` VARCHAR(50)
-);
-
-CREATE TABLE `progetti` (
-    `progetto_id` INT AUTO_INCREMENT,
-    `nome_progetto` VARCHAR(50),
-    `dettagli_implementativi` VARCHAR(10000),
-    `questionario` INT,
-    PRIMARY KEY(`progetto_id`),
-    FOREIGN KEY(`questionario`) REFERENCES `questionario`(`questionario_id`)
+    `type` VARCHAR(50),
+    `classe` INT,
+    PRIMARY  KEY(`id_utenti`),
+    FOREIGN KEY(`classe`) REFERENCES ON `classe`(`id_classe`)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 );
 
-CREATE TABLE `scelte` (
-    `id` INT AUTO_INCREMENT,
-    `nome` VARCHAR(500) UNIQUE,
-    `sceltaProgetto` INT,
-    `questionario` INT,
-    PRIMARY KEY(`id`)
+/*CREATE TABLE `utenti_classe` (
+    `id_utente` INT,
+    `id_classe` INT,
+    FOREIGN KEY (`id_utente`) REFERENCES `utenti`(`id_utenti`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY (`id_classe`) REFERENCES `classe`(`id_classe`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);*/
+
+CREATE TABLE `questionario` (
+    `id_questionario` VARCHAR(50),
+    `nomeQuestionario` VARCHAR(50),
+    `classe` INT,
+    PRIMARY KEY(`id_questionario`),
+    FOREIGN KEY(`classe`) REFERENCES `classe`(`id_classe`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+CREATE TABLE `progetto` (
+    `id_progetto` INT AUTO_INCREMENT,
+    `nome_progetto` VARCHAR(100),
+    `dettagliImplementativi` VARCHAR(36535),
+    `questionario` VARCHAR(50),
+    PRIMARY KEY(`id_progetto`),
+    FOREIGN KEY(`questionario`) REFERENCES `questionario`(`id_questionario`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+CREATE TABLE `votazione` (
+    `id_votazione` INT AUTO_INCREMENT,
+    `id_questionario` VARCHAR(50),
+    `id_progetto` INT(50),
+    `utente_votante` INT,
+    PRIMARY KEY(`id_votazione`),
+    FOREIGN KEY(`id_questionario`) REFERENCES `questionario`(`id_questionario`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY(`id_progetto`) REFERENCES `progetto`(`id_progetto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY(`utente_votante`) REFERENCES `utenti`(`id_utenti`)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
 );
