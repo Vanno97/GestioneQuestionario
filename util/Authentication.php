@@ -27,10 +27,9 @@ class Authentication
             $_SESSION['token'] = $defToken;
             $_SESSION['ruolo'] = $utente->getType();
             $_SESSION['username'] = $utente->getUsername();
+            $_SESSION['user_id'] = $utente->getIdUtente();
             $utente->setPassword("");
-            var_dump("hey");
-            var_dump($utente);
-            setcookie('classe',$utente->getClassi()[0],time()+1200);
+            setcookie('classe',$utente->getClasse()->getIdClasse());
             return $defToken;
         }
         return false;

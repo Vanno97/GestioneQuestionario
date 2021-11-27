@@ -1,4 +1,4 @@
 <?php
-require_once "model/dao/ProgettoDAO.php";
-$dao = new ProgettoDAO();
-var_dump($dao->getAllByQuestionario('V0750019'));
+require_once "model/dao/UtentiDAO.php";
+$dao = new UtentiDao();
+var_dump($dao->read(1));

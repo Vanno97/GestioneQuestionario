@@ -9,6 +9,7 @@ body {
 }
 
 .loginInput:-webkit-autofill,
+.loginInput:-webkit-autofill:read-only,
 .loginInput:-webkit-autofill:hover,
 .loginInput:-webkit-autofill:focus,
 .loginInput:-webkit-autofill:active {
@@ -16,7 +17,7 @@ body {
   -webkit-transition-delay: 9999s;
 }
 
-.loginInput, .loginInput:focus, .loginInput:disabled, .form-select {
+.loginInput, .loginInput:focus, .loginInput:disabled, .loginInput:read-only, .form-select {
   color: white;
   background-color: #505050;
   border-top: none;

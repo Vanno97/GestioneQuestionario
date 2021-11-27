@@ -8,21 +8,25 @@ if(!isset($_COOKIE['token'])) {
 <div class="row">
     <div class="col"></div>
     <div class="col-md-6">
-        <div class="card-body">
-            <h4 class="card-title" style="color:white;">Scegli il progetto per cui vuoi votare</h4>
-            <form>
-                <?php
-                    require_once "controller/QuestionarioController.php";
-                    $questionarioController = new QuestionarioController();
-                    //print_r($_COOKIE);
-                    //$utente = $_COOKIE['user'];
-                    //$listaQuestionari = $questionarioController->getAllByClasse($utente->getClassi[0]);
-                    //echo $utente->getClassi[0];
-                ?>
-                <select class="form-select">
-                    <option value="">Progetto</option>
-                </select>
-            </form>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" style="color:white;">Scegli il progetto per cui vuoi votare</h4>
+                <form action="dispatcher.php" method="post">
+                    <?php
+                        require_once "controller/QuestionarioController.php";
+                        $questionarioController = new QuestionarioController();
+                        $classe = $_COOKIE['classe'];
+                        $listaQuestionari = $questionarioController->getAllByClasse($classe);
+                    ?>
+                    <input type="hidden" name="action" value="sceltaQuestionario">
+                    <select class="form-select" name="questionarioSelezionato">
+                        <?php foreach ($listaQuestionari as $item): ?>
+                            <option value="<?php echo $item->getIdQuestionario() ?>"><?php echo $item->getNomeQuestionario() ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button class="btn btn-success mt-3" type="submit">Invia</button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="col"></div>

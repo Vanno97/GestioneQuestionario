@@ -30,8 +30,8 @@ class ProgettoController implements BaseController
      */
     public function read($idProgetto)
     {
-        if($this->authorization->checkAuthorization("ADMIN")) {
-            $this->dao->read($idProgetto);
+        if($this->authorization->checkAuthorization(array("ADMIN","USER"), $_COOKIE['token'])) {
+            return $this->dao->read($idProgetto);
         }
         return false;
     }

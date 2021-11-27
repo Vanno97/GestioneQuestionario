@@ -42,7 +42,7 @@ class VotazioneController implements BaseController
      */
     public function insert($model)
     {
-        if($this->authorization->checkAuthorization("ADMIN")) {
+        if($this->authorization->checkAuthorization(array("ADMIN","USER"),$_COOKIE['token'])) {
             return $this->dao->insert($model);
         }
         return "unauthorized.php";

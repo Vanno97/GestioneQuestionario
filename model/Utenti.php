@@ -26,24 +26,24 @@ class Utenti
     private $type;
 
     /**
-     * @var array Lista di classi a cui appartiene l'utente
+     * @var Classe Lista di classi a cui appartiene l'utente
      */
-    private $classi;
+    private $classe;
 
     /**
      * @param int $idUtente
      * @param string $username
      * @param string $password
      * @param string $type
-     * @param array $classi
+     * @param Classe $classe
      */
-    public function __construct(int $idUtente, string $username, string $password, string $type, array $classi)
+    public function __construct(int $idUtente, string $username, string $password, string $type, Classe $classe)
     {
         $this->idUtente = $idUtente;
         $this->username = $username;
         $this->password = $password;
         $this->type = $type;
-        $this->classi = $classi;
+        $this->classe = $classe;
     }
 
     /**
@@ -111,18 +111,18 @@ class Utenti
     }
 
     /**
-     * @return array
+     * @return Classe
      */
-    public function getClassi(): array
+    public function getClasse(): Classe
     {
-        return $this->classi;
+        return $this->classe;
     }
 
     /**
-     * @param array $classi
+     * @param Classe $classe
      */
-    public function setClassi(array $classi)
+    public function setClasse(Classe $classe)
     {
-        $this->classi = $classi;
+        $this->classe = $classe;
     }
 }

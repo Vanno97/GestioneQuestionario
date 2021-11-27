@@ -11,7 +11,7 @@ CREATE TABLE `utenti` (
     `type` VARCHAR(50),
     `classe` INT,
     PRIMARY  KEY(`id_utenti`),
-    FOREIGN KEY(`classe`) REFERENCES ON `classe`(`id_classe`)
+    FOREIGN KEY(`classe`) REFERENCES `classe`(`id_classe`)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 );

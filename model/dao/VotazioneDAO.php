@@ -98,8 +98,8 @@ class VotazioneDAO implements BaseDao
     {
         $connection = DatabaseConnection::getConnection();
         $statement = $connection->prepare(self::QUERY_INSERT);
-        $idQuestionario = $model->getIdQuestionario();
-        $idProgetto = $model->getIdProgetto();
+        $idQuestionario = $model->getQuestionario()->getIdQuestionario();
+        $idProgetto = $model->getProgetto()->getIdProgetto();
         $utenteVotante = $model->getUtenteVotante();
         $statement->bind_param("sii",$idQuestionario, $idProgetto,$utenteVotante);
         $result = $statement->execute();
@@ -115,8 +115,8 @@ class VotazioneDAO implements BaseDao
     {
         $connection = DatabaseConnection::getConnection();
         $statement = $connection->prepare(self::QUERY_UPDATE);
-        $idQuestionario = $model->getIdQuestionario();
-        $idProgetto = $model->getIdProgetto();
+        $idQuestionario = $model->getQuestionario();
+        $idProgetto = $model->getProgetto();
         $utente_votante = $model->getUtenteVotante();
         $idVotazione = $model->getIdVotazione();
         $statement->bind_param("siii",$idQuestionario, $idProgetto, $utente_votante, $idVotazione);

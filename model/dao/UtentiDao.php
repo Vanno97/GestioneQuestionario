@@ -6,11 +6,15 @@ require_once "model/Classe.php";
 class UtentiDao implements BaseDao
 {
 
-    private const QUERY_ALL = "";
+    private const QUERY_ALL = "SELECT `utenti`.`id_utenti`, `utenti`.`username`, `utenti`.`password`,`utenti`.`type`,
+                                      `classe`.`id_classe`, `classe`.`nomeClasse` FROM `utenti` 
+                                          JOIN `classe` ON `utenti`.`classe` = `classe`.`id_classe`";
     //avendo l'id dell'utente;
-    private const QUERY_READ = "SELECT * FROM `utenti_classe` JOIN `classe` ON `classe`.`id_classe` = `utenti_classe`.`id_classe` WHERE `utenti_classe`.`id_utente` = ?";
-    private const QUERY_READ_ALL_ONLY_USER = "SELECT * FROM `utenti`";
-    private const QUERY_READ_ONLY_USER = "SELECT * FROM `utenti` WHERE `id_utenti` = ?";
+    private const QUERY_READ = "SELECT `utenti`.`id_utenti`, `utenti`.`username`, `utenti`.`password`,`utenti`.`type`,
+                                       `classe`.`id_classe`, `classe`.`nomeClasse` FROM `utenti`
+                                           JOIN `classe` ON `utenti`.`classe` = `classe`.`id_classe` WHERE `id_utenti`=?";
+    //private const QUERY_READ_ALL_ONLY_USER = "SELECT * FROM `utenti`";
+    //private const QUERY_READ_ONLY_USER = "SELECT * FROM `utenti` WHERE `id_utenti` = ?";
     private const QUERY_INSERT = "INSERT INTO `utenti`(`username`, `password`, `type`) VALUES (?,?,?,?)";
     private const QUERY_UPDATE = "UPDATE `utenti` SET `username`=?,`password`=?,`type`=? WHERE `id_utenti`=?";
     private const QUERY_DELETE = "DELETE FROM `utenti` WHERE `id_utenti`=?";
@@ -22,35 +26,20 @@ class UtentiDao implements BaseDao
      */
     public function getAll(): array
     {
-        $listaUtentiSenzaClasse = [];
         $listaUtenti = [];
         $connection = DatabaseConnection::getConnection();
-        if($resultOnlyUser = $connection->query(self::QUERY_READ_ALL_ONLY_USER)){
-            while ($rowUser = $resultOnlyUser->fetch_array(MYSQLI_ASSOC)) {
-                $listaUtentiSenzaClasse[] = $rowUser;
-            }
-            foreach ($listaUtentiSenzaClasse as $value) {
-                $listaClassi = [];
-                $statement = $connection->prepare(self::QUERY_READ);
-                $idUtente = (int)$value['id_utenti'];
-                $statement->bind_param("i", $idUtente);
-                if($statement->execute()) {
-                    $result = $statement->get_result();
-                    while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $listaClassi[] = new Classe(
-                            $row['id_classe'],
-                            $row['nomeClasse']
-                        );
-                    }
-                    $listaUtenti[] = new Utenti(
-                        $value['id_utenti'],
-                        $value['username'],
-                        $value['password'],
-                        $value['type'],
-                        $listaClassi
-                    );
-                    $statement->close();
-                }
+        if($result = $connection->query(self::QUERY_ALL)){
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                $listaUtenti[] = new Utenti(
+                    $row['id_utenti'],
+                    $row['username'],
+                    $row['password'],
+                    $row['type'],
+                    new Classe(
+                        $row['id_classe'],
+                        $row['nomeClasse']
+                    )
+                );
             }
         }
         return $listaUtenti;
@@ -63,34 +52,21 @@ class UtentiDao implements BaseDao
     public function read($id)
     {
         $connection = DatabaseConnection::getConnection();
-        $statement = $connection->prepare(self::QUERY_READ_ONLY_USER);
+        $statement = $connection->prepare(self::QUERY_READ);
         $statement->bind_param("i", $id);
         if($statement->execute()) {
-            $resultOnlyUser = $statement->get_result();
-            $rowUser = $resultOnlyUser->fetch_array(MYSQLI_ASSOC);
-            $utenteSenzaClasse = $rowUser;
-
-            $listaClassi = [];
-            $statement = $connection->prepare(self::QUERY_READ);
-            $idUtente = (int)$utenteSenzaClasse['id_utenti'];
-            $statement->bind_param("i", $idUtente);
-            if($statement->execute()) {
-                $result = $statement->get_result();
-                while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                    $listaClassi[] = new Classe(
-                        $row['id_classe'],
-                        $row['nomeClasse']
-                    );
-                }
-            }
-            $utente = new Utenti(
-                $utenteSenzaClasse['id_utenti'],
-                $utenteSenzaClasse['username'],
-                $utenteSenzaClasse['password'],
-                $utenteSenzaClasse['type'],
-                $listaClassi
+            $result = $statement->get_result();
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            return new Utenti(
+                $row['id_utenti'],
+                $row['username'],
+                $row['password'],
+                $row['type'],
+                new Classe(
+                    $row['id_classe'],
+                    $row['nomeClasse']
+                )
             );
-            return $utente;
 
         }
         return false;

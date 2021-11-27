@@ -10,12 +10,12 @@ class Votazione
     /**
      * @var Questionario
      */
-    private $id_questionario;
+    private $questionario;
 
     /**
      * @var Progetto
      */
-    private $id_progetto;
+    private $progetto;
 
     /**
      * @var Utenti
@@ -31,8 +31,8 @@ class Votazione
     public function __construct(int $id_votazione, Questionario $id_questionario, Progetto $id_progetto, int $utente_votante)
     {
         $this->id_votazione = $id_votazione;
-        $this->id_questionario = $id_questionario;
-        $this->id_progetto = $id_progetto;
+        $this->questionario = $id_questionario;
+        $this->progetto = $id_progetto;
         $this->utente_votante = $utente_votante;
     }
 
@@ -55,33 +55,33 @@ class Votazione
     /**
      * @return Questionario
      */
-    public function getIdQuestionario(): Questionario
+    public function getQuestionario(): Questionario
     {
-        return $this->id_questionario;
+        return $this->questionario;
     }
 
     /**
-     * @param Questionario $id_questionario
+     * @param Questionario $questionario
      */
-    public function setIdQuestionario(Questionario $id_questionario): void
+    public function setQuestionario(Questionario $questionario): void
     {
-        $this->id_questionario = $id_questionario;
+        $this->questionario = $questionario;
     }
 
     /**
      * @return Progetto
      */
-    public function getIdProgetto(): Progetto
+    public function getProgetto(): Progetto
     {
-        return $this->id_progetto;
+        return $this->progetto;
     }
 
     /**
-     * @param Progetto $id_progetto
+     * @param Progetto $progetto
      */
-    public function setIdProgetto(Progetto $id_progetto): void
+    public function setProgetto(Progetto $progetto): void
     {
-        $this->id_progetto = $id_progetto;
+        $this->progetto = $progetto;
     }
 
     /**

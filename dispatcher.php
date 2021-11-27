@@ -124,5 +124,42 @@ function dispatch($action)
                 }
             }
             break;
+        case 'sceltaQuestionario':
+            if(isset($_POST['questionarioSelezionato'])) {
+                $questionarioSelezionato = $_POST['questionarioSelezionato'];
+                setcookie("questionarioSelezionato", $questionarioSelezionato);
+                header('Location: votazione.php');
+            }
+            break;
+        case 'vota':
+            if(isset($_POST['nome'])) {
+                if(isset($_POST['scelta'])) {
+                    $questionarioVotazione = $_COOKIE['questionarioSelezionato'];
+                    setcookie("questionarioSelezionato", '');
+                    $scelta = $_POST['scelta'];
+                    //echo "Questionario:".$questionario;
+                    //echo "Nome:".$nome;
+                    //echo "Scelta:".$scelta;
+                    require_once "controller/VotazioneController.php";
+                    require_once "model/Votazione.php";
+                    require_once "controller/QuestionarioController.php";
+                    require_once "controller/ProgettoController.php";
+                    $questionarioController = new QuestionarioController();
+                    $questionarioVotato= $questionarioController->read($questionarioVotazione);
+                    $progettoCotroller = new ProgettoController();
+                    $progettoVotato = $progettoCotroller->read($scelta);
+                    $votazioneController = new VotazioneController();
+                    $votazioneController->insert(
+                        new Votazione(
+                            0,
+                            $questionarioVotato,
+                            $progettoVotato,
+                            $_SESSION['user_id']
+                        )
+                    );
+                    header('Location: fine_votazione.php');
+                }
+            }
+            break;
     }
 }

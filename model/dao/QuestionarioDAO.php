@@ -121,18 +121,18 @@ class QuestionarioDAO implements BaseDao
      * @return array Lista dei progetti trovati
      */
     public function getAllFromClasse($classe) {
-        $listaProgetti = [];
+        $listaQuestionario = [];
         $connection = DatabaseConnection::getConnection();
         $statement = $connection->prepare(self::QUERY_READ_ALL_FROM_CLASSE);
         $statement->bind_param("i", $classe);
         if($statement->execute()) {
             $result = $statement->get_result();
             while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                $idQuestionario = $row['idquestionario'];
+                $idQuestionario = $row['id_questionario'];
                 $questionario = $this->read($idQuestionario);
-                $listaProgetti[] = $questionario;
+                $listaQuestionario[] = $questionario;
             }
         }
-        return $listaProgetti;
+        return $listaQuestionario;
     }
 }
