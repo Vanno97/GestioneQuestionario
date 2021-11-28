@@ -23,6 +23,8 @@ class VotazioneDAO implements BaseDao
     private const QUERY_UPDATE = "UPDATE `votazione` SET `id_questionario`=?,`id_progetto`=?,`utente_votante`=? WHERE `id_votazione`=?";
     private const QUERY_DELETE = "DELETE FROM `votazione` WHERE `id_votazione`=?";
 
+    private const QUERY_CHECK_VOTE = "SELECT * FROM `votazione` WHERE `utente_votante` = ?";
+
     /**
      * @inheritDoc
      */
@@ -136,5 +138,17 @@ class VotazioneDAO implements BaseDao
         $result =  $statement->execute();
         $statement->close();
         return $result;
+    }
+
+    public function checkVote($utente) {
+        $connection = DatabaseConnection::getConnection();
+        $statement = $connection->prepare(self::QUERY_CHECK_VOTE);
+        $statement->bind_param("i", $utente);
+        $statement->execute();
+        $result = $statement->get_result();
+        if($result->num_rows>0) {
+            return true;
+        }
+         return false;
     }
 }

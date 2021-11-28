@@ -69,4 +69,10 @@ class VotazioneController implements BaseController
         }
         return "unauthorized.php";
     }
+
+    public function checkVote($utente) {
+        if($this->authorization->checkAuthorization(array("ADMIN","USER"), $_COOKIE['token'])) {
+            return $this->dao->checkVote($utente);
+        }
+    }
 }

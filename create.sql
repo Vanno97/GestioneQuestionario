@@ -4,6 +4,8 @@ CREATE TABLE `classe` (
     PRIMARY KEY(`id_classe`)
 );
 
+INSERT INTO `classe` (`nomeclasse`) VALUES ('NESSUNA CLASSE');
+
 CREATE TABLE `utenti` (
     `id_utenti` INT AUTO_INCREMENT,
     `username` VARCHAR(50),
@@ -15,6 +17,8 @@ CREATE TABLE `utenti` (
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 );
+
+INSERT INTO `utenti` (`username`,`password`,`type`,`classe`) VALUES ('admin','21232f297a57a5a743894a0e4a801fc3','ADMIN',1);
 
 /*CREATE TABLE `utenti_classe` (
     `id_utente` INT,

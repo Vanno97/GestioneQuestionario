@@ -30,26 +30,35 @@ if(!isset($_COOKIE['token'])) {
                             }
                         ?>
 
-                        <?php foreach ($listaProgetti as $item) : ?>
-                        <div class="row">
-                            <div class="col-11 col-md-10 float-start">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5 style="color: white;"><?php echo $item->getNomeProgetto()?></h5>
+                        <?php
+                            require_once "controller/VotazioneController.php";
+                            $votazioneController = new VotazioneController();
+                            $checkVote = $votazioneController->checkVote($_SESSION['user_id']);
+                        ?>
+                        <?php if(!$checkVote): ?>
+                            <?php foreach ($listaProgetti as $item) : ?>
+                            <div class="row">s
+                                <div class="col-11 col-md-10 float-start">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 style="color: white;"><?php echo $item->getNomeProgetto()?></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="text-muted mb-2 ps-5 dettagliProgetto" style="color: lightgrey !important;"><?php echo $item->getDettagliImplementativi()?></h6>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h6 class="text-muted mb-2 ps-5 dettagliProgetto" style="color: lightgrey !important;"><?php echo $item->getDettagliImplementativi()?></h6>
-                                    </div>
+                                <div class="col-1 col-md-2 float-start d-md-flex justify-content-sm-center justify-content-md-center align-items-md-center">
+                                    <input required type="radio" name="scelta" style="height: 17.8px; width: 17.8px;" value="<?php echo $item->getIdProgetto()?>">
                                 </div>
                             </div>
-                            <div class="col-1 col-md-2 float-start d-md-flex justify-content-sm-center justify-content-md-center align-items-md-center">
-                                <input required type="radio" name="scelta" style="height: 17.8px; width: 17.8px;" value="<?php echo $item->getIdProgetto()?>">
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                        <button class="btn btn-success mt-3" type="submit">Invia</button>
+                            <?php endforeach; ?>
+                            <button class="btn btn-success mt-3" type="submit">Invia</button>
+                        <?php else: ?>
+                            <h5 style="color: white;">HAI GIà VOTATO</h5>
+                        <?php endif;?>
                     </form>
                 </div>
             </div>

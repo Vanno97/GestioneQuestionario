@@ -1,4 +1,6 @@
 <?php
-require_once "model/dao/UtentiDAO.php";
-$dao = new UtentiDao();
-var_dump($dao->read(1));
+require_once "controller/VotazioneController.php";
+$dao = new VotazioneController();
+echo "<pre>";
+var_dump($dao->getRisultati());
+echo "</pre>";
