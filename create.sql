@@ -20,4 +20,16 @@ CREATE TABLE `user_roles` (
     FOREIGN KEY (`role_id`) REFERENCES `role`(`role_id`)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);
+
+DELIMITER $$
+CREATE PROCEDURE insertUser(IN usernameToInsert VARCHAR(50), IN passwordToInsert VARCHAR(50))
+BEGIN
+    DECLARE userId INT;
+    DECLARE roleId INT;
+    INSERT INTO `user` (`username`,`password`) VALUES (usernameToInsert,passwordToInsert);
+    SELECT user_id INTO userId FROM `user` WHERE `username` = usernameToInsert AND `password` = passwordToInsert;
+    SELECT role_id INTO roleId FROM `role` WHERE `role_name` = 'ROLE_USER';
+    INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES (userId, roleId);
+END $$
+DELIMITER ;

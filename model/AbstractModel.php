@@ -1,5 +1,9 @@
 <?php
+require_once "util/DatabaseConnection.php";
 
+/**
+ * This Abstract Class implements method to interface with the DB
+ */
 abstract class AbstractModel
 {
     /**
@@ -7,11 +11,11 @@ abstract class AbstractModel
      * @param $query string to execute
      * @return array|false
      */
-    protected function executeQuery(string $query)
+    protected static function executeQuery(string $query)
     {
         $connection = DatabaseConnection::getConnection();
         $result = $connection->query($query);
-        if(!$result) {
+        if($result) {
             return $result->fetch_all(MYSQLI_ASSOC);
         }
         return false;
@@ -22,9 +26,33 @@ abstract class AbstractModel
      * @param string $query Query used to create statement
      * @return false|mysqli_stmt Return the statement, false if encounter an error
      */
-    protected function getStatement(string $query) {
+    protected static function getStatement(string $query) {
         $connection = DatabaseConnection::getConnection();
         return $connection->prepare($query);
+    }
+
+    /**
+     * This method retrieve a statement using the given query and the given connection
+     * @param string $query Query used to create statement
+     * @param mysqli $connection Connection used to create statement
+     * @return false|mysqli_stmt Return the statement, false if encounter an error
+     */
+    protected static function getStatementFromConnection(string $query, mysqli $connection) {
+        return $connection->prepare($query);
+    }
+
+    /**
+     * This method retrieve a statement using the given query and open a transaction
+     * @param string $query Query used to create a statement
+     * @return array Return the statement and connection
+     */
+    protected static function getStatementWithTransaction(string $query): array
+    {
+        $connection = DatabaseConnection::getConnection();
+        $connection->begin_transaction();
+        $dbConnectionAndStatement['connection'] = $connection;
+        $dbConnectionAndStatement['statement'] = $connection->prepare($query);
+        return $dbConnectionAndStatement;
     }
 
     /**
@@ -32,12 +60,14 @@ abstract class AbstractModel
      * @param mysqli_stmt $statement Statement to execute
      * @return array|false Return data of statement, false if encounter an error
      */
-    protected function executeStatement(mysqli_stmt $statement) {
+    protected static function executeStatement(mysqli_stmt $statement) {
         $executeResult = $statement->execute();
         if($executeResult) {
             $result = $statement->get_result();
-            if($result) {
+            if($result instanceof mysqli_result) {
                 return $result->fetch_all(MYSQLI_ASSOC);
+            } else {
+                return true;
             }
         }
         return false;

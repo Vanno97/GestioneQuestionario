@@ -32,7 +32,7 @@ class DatabaseConnection
             $username = $properties['username'];
             $password = $properties['password'];
             $database = $properties['database'];
-            self::$connection = @new mysqli($host,$username,$password,$database,$port);
+            self::$connection = new mysqli($host,$username,$password,$database,$port);
             if(self::$connection->connect_error) {
                 die("Errore di connesione al db");
             }

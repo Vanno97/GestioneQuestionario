@@ -1,4 +1,4 @@
 <?php
-require_once "util/DatabaseConnection.php";
+require_once "model/User.php";
 
-DatabaseConnection::getConnection();
+var_dump(User::getAll());
